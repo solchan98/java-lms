@@ -62,7 +62,6 @@ create table session
     session_type               varchar(20) not null,
     session_status             varchar(20) not null,
     session_recruitment_status varchar(20) not null,
-    image_id                   bigint,
     start_at                   timestamp,
     end_at                     timestamp
 );
@@ -81,4 +80,10 @@ create table image
     height     bigint      not null,
     image_type varchar(10) not null,
     size       bigint      not null
-)
+);
+
+create table session_image
+(
+    session_id bigint not null,
+    image_id   bigint not null
+);

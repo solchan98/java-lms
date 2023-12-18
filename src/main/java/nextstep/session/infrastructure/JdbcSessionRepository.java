@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -42,16 +43,38 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(Session session) {
-        String sql = "insert into session (amount, session_type, session_status, image_id, start_at, end_at, number_of_maximum_members) values (?, ?, ?, ?, ?, ?, ?)";
-        Long imageId = null;
-        if (session.getCoverImage() != null) {
-            imageId = session.getCoverImage().getId();
-        }
+        String sql = "insert into session (amount, session_type, session_status, start_at, end_at, number_of_maximum_members) values (?, ?, ?, ?, ?, ?)";
 
-        int sessionId = jdbcTemplate.update(sql, session.getAmount(), session.getSessionType().name(), session.getStatus().name(), imageId, session.getBaseTime().getStartAt(), session.getBaseTime().getEndAt(), session.getMembers().getNumberOfMaximumMembers());
+        List<Long> imageIds = session.getCoverImages()
+                .stream()
+                .map(Image::getId)
+                .collect(Collectors.toList());
+
+
+        int sessionId = jdbcTemplate.update(sql, session.getAmount(), session.getSessionType().name(), session.getStatus().name(), session.getBaseTime().getStartAt(), session.getBaseTime().getEndAt(), session.getMembers().getNumberOfMaximumMembers());
+        refreshSessionImages(sessionId, imageIds);
         refreshMembers(session, sessionId);
 
         return sessionId;
+    }
+
+    private void refreshSessionImages(long sessionId, List<Long> imageIds) {
+        String deleteSessionImagesSql = "delete from session_image where session_id = ?";
+        jdbcTemplate.update(deleteSessionImagesSql, sessionId);
+
+        String saveSessionImage = "insert into session_image(session_id, image_id) values(?, ?)";
+        jdbcTemplate.batchUpdate(saveSessionImage, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setLong(1, sessionId);
+                ps.setLong(2, imageIds.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return imageIds.size();
+            }
+        });
     }
 
     private void refreshMembers(Session session, int sessionId) {
@@ -77,7 +100,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         // 세션 조회
-        String selectSessionSql = "select id, amount, number_of_maximum_members, session_type, session_status, session_recruitment_status, image_id, start_at, end_at " +
+        String selectSessionSql = "select id, amount, number_of_maximum_members, session_type, session_status, session_recruitment_status, start_at, end_at " +
                 "from session where id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(
@@ -89,10 +112,10 @@ public class JdbcSessionRepository implements SessionRepository {
                         SessionType.valueOf(rs.getString(4)),
                         SessionStatus.valueOf(rs.getString(5)),
                         SessionRecruitmentStatus.valueOf(rs.getString(6)),
-                        image(rs.getLong(7)),
+                        images(id),
                         new BaseTimeEntity(
-                                toLocalDateTime(rs.getTimestamp(8)),
-                                toLocalDateTime(rs.getTimestamp(9)))
+                                toLocalDateTime(rs.getTimestamp(7)),
+                                toLocalDateTime(rs.getTimestamp(8)))
                 ),
                 id));
     }
@@ -105,9 +128,11 @@ public class JdbcSessionRepository implements SessionRepository {
         return new Users(numberOfMaximumMembers, new HashSet<>(members));
     }
 
-    private Image image(long imageId) {
-        return imageRepository.findById(imageId)
-                .orElse(null);
+    private List<Image> images(long sessionId) {
+        String selectSessionImageIds = "select image_id from session_image where session_id = ?";
+        List<Long> imageIds = jdbcTemplate.queryForList(selectSessionImageIds, Long.class, sessionId);
+
+        return imageRepository.findAllByIds(imageIds);
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

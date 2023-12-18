@@ -44,7 +44,7 @@ class JdbcSessionRepositoryTest {
         Session session = optionalSession.get();
         assertThat(session).isNotNull();
         assertAll(
-                () -> assertThat(session.getCoverImage()).isNotNull(),
+                () -> assertThat(session.getCoverImages()).hasSize(2),
                 () -> assertThat(session.getMembers()).isNotNull()
         );
     }

@@ -6,6 +6,7 @@ import nextstep.image.domain.ImageType;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository("imageRepository")
@@ -36,5 +37,10 @@ public class JdbcImageRepository implements ImageRepository {
                         rs.getLong(5)
                 ),
                 id));
+    }
+
+    @Override
+    public List<Image> findAllByIds(List<Long> imageIds) {
+        return List.of(Image.of(300, 200, ImageType.JPG, 1024), Image.of(300, 200, ImageType.JPG, 1024));
     }
 }
