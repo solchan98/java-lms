@@ -1,6 +1,8 @@
 package nextstep.session;
 
 import nextstep.common.BaseTimeEntity;
+import nextstep.image.domain.Image;
+import nextstep.image.domain.ImageType;
 import nextstep.session.domain.Session;
 import nextstep.session.domain.SessionRecruitmentStatus;
 import nextstep.session.domain.SessionStatus;
@@ -9,6 +11,7 @@ import nextstep.session.domain.Users;
 import nextstep.users.domain.NsUserTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public class TestFixtures {
@@ -21,7 +24,7 @@ public class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.END,
                 SessionRecruitmentStatus.END,
-                null,
+                List.of(),
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
@@ -34,7 +37,7 @@ public class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.PREPARING,
                 SessionRecruitmentStatus.PROCESSING,
-                null,
+                List.of(),
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
@@ -47,7 +50,7 @@ public class TestFixtures {
                 SessionType.PAID,
                 SessionStatus.PROCESSING,
                 SessionRecruitmentStatus.PROCESSING,
-                null,
+                List.of(),
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
@@ -60,7 +63,7 @@ public class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.PROCESSING,
                 SessionRecruitmentStatus.PROCESSING,
-                null,
+                List.of(),
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
@@ -73,7 +76,7 @@ public class TestFixtures {
                 SessionType.FREE,
                 SessionStatus.PROCESSING,
                 SessionRecruitmentStatus.END,
-                null,
+                List.of(),
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }

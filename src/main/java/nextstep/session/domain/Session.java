@@ -6,6 +6,7 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Session {
@@ -24,7 +25,20 @@ public class Session {
 
     private Image coverImage;
 
+    private List<Image> coverImages;
+
     private BaseTimeEntity baseTime;
+
+    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, SessionRecruitmentStatus sessionRecruitmentStatus,  List<Image> coverImages, BaseTimeEntity baseTime) {
+        this.id = id;
+        this.members = members;
+        this.amount = amount;
+        this.sessionType = sessionType;
+        this.status = status;
+        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
+        this.coverImages = coverImages;
+        this.baseTime = baseTime;
+    }
 
     public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, SessionRecruitmentStatus sessionRecruitmentStatus, Image coverImage, BaseTimeEntity baseTime) {
         this.id = id;
@@ -59,6 +73,28 @@ public class Session {
         );
     }
 
+    public static Session create(
+            Users members,
+            Long amount,
+            SessionType sessionType,
+            List<Image> coverImages,
+            LocalDateTime startAt,
+            LocalDateTime endAt
+    ) {
+        requiredNotBeforeCurrent(startAt, "시작일은 현재보다 이전일 수 없습니다.");
+        requiredNotBeforeCurrent(endAt, "종료일은 현재보다 이전일 수 없습니다.");
+        return new Session(
+                null,
+                members,
+                amount,
+                sessionType,
+                SessionStatus.PREPARING,
+                SessionRecruitmentStatus.PROCESSING,
+                coverImages,
+                new BaseTimeEntity(startAt, endAt)
+        );
+    }
+
     public Long getId() {
         return id;
     }
@@ -81,6 +117,10 @@ public class Session {
 
     public Image getCoverImage() {
         return coverImage;
+    }
+
+    public List<Image> getCoverImages() {
+        return coverImages;
     }
 
     public BaseTimeEntity getBaseTime() {
