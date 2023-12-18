@@ -58,7 +58,7 @@ public class TestFixtures {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 0L,
                 SessionType.FREE,
-                SessionStatus.RECRUITING,
+                SessionStatus.PREPARING,
                 SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))

@@ -4,7 +4,7 @@ import java.util.function.BooleanSupplier;
 
 public enum SessionStatus {
     PREPARING("준비중", () -> false),
-    RECRUITING("모집중", () -> true),
+    PROCESSING("진행중", () -> true),
     END("종료", () -> false);
 
     private final String status;
