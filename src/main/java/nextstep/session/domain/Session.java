@@ -23,8 +23,6 @@ public class Session {
 
     private SessionRecruitmentStatus sessionRecruitmentStatus;
 
-    private Image coverImage;
-
     private List<Image> coverImages;
 
     private BaseTimeEntity baseTime;
@@ -38,39 +36,6 @@ public class Session {
         this.sessionRecruitmentStatus = sessionRecruitmentStatus;
         this.coverImages = coverImages;
         this.baseTime = baseTime;
-    }
-
-    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, SessionRecruitmentStatus sessionRecruitmentStatus, Image coverImage, BaseTimeEntity baseTime) {
-        this.id = id;
-        this.members = members;
-        this.amount = amount;
-        this.sessionType = sessionType;
-        this.status = status;
-        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
-        this.coverImage = coverImage;
-        this.baseTime = baseTime;
-    }
-
-    public static Session create(
-            Users members,
-            Long amount,
-            SessionType sessionType,
-            Image coverImage,
-            LocalDateTime startAt,
-            LocalDateTime endAt
-    ) {
-        requiredNotBeforeCurrent(startAt, "시작일은 현재보다 이전일 수 없습니다.");
-        requiredNotBeforeCurrent(endAt, "종료일은 현재보다 이전일 수 없습니다.");
-        return new Session(
-                null,
-                members,
-                amount,
-                sessionType,
-                SessionStatus.PREPARING,
-                SessionRecruitmentStatus.PROCESSING,
-                coverImage,
-                new BaseTimeEntity(startAt, endAt)
-        );
     }
 
     public static Session create(
@@ -113,10 +78,6 @@ public class Session {
 
     public SessionStatus getStatus() {
         return status;
-    }
-
-    public Image getCoverImage() {
-        return coverImage;
     }
 
     public List<Image> getCoverImages() {
@@ -163,7 +124,8 @@ public class Session {
                 ", amount=" + amount +
                 ", sessionType=" + sessionType +
                 ", status=" + status +
-                ", coverImage=" + coverImage +
+                ", sessionRecruitmentStatus=" + sessionRecruitmentStatus +
+                ", coverImages=" + coverImages +
                 ", baseTime=" + baseTime +
                 '}';
     }
