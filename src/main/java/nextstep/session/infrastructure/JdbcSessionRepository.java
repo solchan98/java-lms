@@ -77,7 +77,7 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public Optional<Session> findById(Long id) {
         // 세션 조회
-        String selectSessionSql = "select id, amount, number_of_maximum_members, session_type, session_status, image_id, start_at, end_at " +
+        String selectSessionSql = "select id, amount, number_of_maximum_members, session_type, session_status, session_recruitment_status, image_id, start_at, end_at " +
                 "from session where id = ?";
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(
