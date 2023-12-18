@@ -74,7 +74,7 @@ class SessionTest {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 0L,
                 SessionType.FREE,
-                null,
+                List.of(),
                 LocalDateTime.now().minusDays(1),
                 LocalDateTime.now().plusDays(7)
         ));
@@ -90,7 +90,7 @@ class SessionTest {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 0L,
                 SessionType.FREE,
-                null,
+                List.of(),
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().minusDays(7))
         );
