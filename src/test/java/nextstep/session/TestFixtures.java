@@ -64,4 +64,17 @@ public class TestFixtures {
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
     }
+
+    public static Session noRecruitingSession() {
+        return new Session(
+                null,
+                new Users(999, Set.of(NsUserTest.JAVAJIGI)),
+                0L,
+                SessionType.FREE,
+                SessionStatus.PROCESSING,
+                SessionRecruitmentStatus.END,
+                null,
+                new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
+        );
+    }
 }

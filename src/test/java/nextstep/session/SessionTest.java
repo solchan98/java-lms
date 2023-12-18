@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static nextstep.session.TestFixtures.endSession;
+import static nextstep.session.TestFixtures.noRecruitingSession;
 import static nextstep.session.TestFixtures.preparingSession;
 import static nextstep.session.TestFixtures.registableRecrutingFreeSession;
 import static nextstep.session.TestFixtures.registableRecrutingPaidSession;
@@ -24,7 +25,7 @@ class SessionTest {
 
     @ParameterizedTest
     @MethodSource(value = "nonRegistrableSessions")
-    void 모집중인_상태일_때만_강의_수강신청_할_수_있다(Session session) {
+    void 진행중이거나_모집중인_상태일_때만_강의_수강신청_할_수_있다(Session session) {
         Payment payment = new Payment("id", session.getId(), NsUserTest.JAVAJIGI.getId(), 1000L);
         Throwable throwable = catchThrowable(() -> session.register(NsUserTest.JAVAJIGI, payment));
 
@@ -33,7 +34,7 @@ class SessionTest {
     }
 
     static Stream<Session> nonRegistrableSessions() {
-        return Stream.of(endSession(), preparingSession());
+        return Stream.of(endSession(), preparingSession(), noRecruitingSession());
     }
 
     @Test
