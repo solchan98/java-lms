@@ -4,6 +4,7 @@ import nextstep.common.BaseTimeEntity;
 import nextstep.image.domain.Image;
 import nextstep.image.domain.ImageRepository;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionRecruitmentStatus;
 import nextstep.session.domain.SessionRepository;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
@@ -87,10 +88,11 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong(2),
                         SessionType.valueOf(rs.getString(4)),
                         SessionStatus.valueOf(rs.getString(5)),
-                        image(rs.getLong(6)),
+                        SessionRecruitmentStatus.valueOf(rs.getString(6)),
+                        image(rs.getLong(7)),
                         new BaseTimeEntity(
-                                toLocalDateTime(rs.getTimestamp(7)),
-                                toLocalDateTime(rs.getTimestamp(8)))
+                                toLocalDateTime(rs.getTimestamp(8)),
+                                toLocalDateTime(rs.getTimestamp(9)))
                 ),
                 id));
     }

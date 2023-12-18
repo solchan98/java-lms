@@ -2,6 +2,7 @@ package nextstep.session;
 
 import nextstep.common.BaseTimeEntity;
 import nextstep.session.domain.Session;
+import nextstep.session.domain.SessionRecruitmentStatus;
 import nextstep.session.domain.SessionStatus;
 import nextstep.session.domain.SessionType;
 import nextstep.session.domain.Users;
@@ -19,6 +20,7 @@ public class TestFixtures {
                 1000L,
                 SessionType.FREE,
                 SessionStatus.END,
+                SessionRecruitmentStatus.END,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
@@ -31,6 +33,7 @@ public class TestFixtures {
                 1000L,
                 SessionType.FREE,
                 SessionStatus.PREPARING,
+                SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
@@ -42,7 +45,8 @@ public class TestFixtures {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 1000L,
                 SessionType.PAID,
-                SessionStatus.RECRUITING,
+                SessionStatus.PREPARING,
+                SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );
@@ -55,6 +59,7 @@ public class TestFixtures {
                 0L,
                 SessionType.FREE,
                 SessionStatus.RECRUITING,
+                SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
         );

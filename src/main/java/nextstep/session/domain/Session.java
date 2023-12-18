@@ -20,16 +20,19 @@ public class Session {
 
     private SessionStatus status;
 
+    private SessionRecruitmentStatus sessionRecruitmentStatus;
+
     private Image coverImage;
 
     private BaseTimeEntity baseTime;
 
-    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, Image coverImage, BaseTimeEntity baseTime) {
+    public Session(Long id, Users members, Long amount, SessionType sessionType, SessionStatus status, SessionRecruitmentStatus sessionRecruitmentStatus, Image coverImage, BaseTimeEntity baseTime) {
         this.id = id;
         this.members = members;
         this.amount = amount;
         this.sessionType = sessionType;
         this.status = status;
+        this.sessionRecruitmentStatus = sessionRecruitmentStatus;
         this.coverImage = coverImage;
         this.baseTime = baseTime;
     }
@@ -50,6 +53,7 @@ public class Session {
                 amount,
                 sessionType,
                 SessionStatus.PREPARING,
+                SessionRecruitmentStatus.PROCESSING,
                 coverImage,
                 new BaseTimeEntity(startAt, endAt)
         );
@@ -89,14 +93,8 @@ public class Session {
         }
     }
 
-    private void validatePaid(Payment payment) {
-        if (Objects.nonNull(payment) && this.amount.equals(payment.amount())) {
-            throw new IllegalArgumentException("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능합니다.");
-        }
-    }
-
     public void register(NsUser user, Payment payment) {
-        if (!status.isRegistrable()) {
+        if (!status.isRegistrable() || !sessionRecruitmentStatus.isRegistrable()) {
             throw new IllegalStateException("수강 신청 불가능한 상태입니다.");
         }
 
@@ -105,6 +103,12 @@ public class Session {
         }
 
         members.register(user, sessionType);
+    }
+
+    private void validatePaid(Payment payment) {
+        if (Objects.nonNull(payment) && this.amount.equals(payment.amount())) {
+            throw new IllegalArgumentException("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능합니다.");
+        }
     }
 
     public int memberSize() {
