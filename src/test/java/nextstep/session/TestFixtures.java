@@ -45,7 +45,7 @@ public class TestFixtures {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 1000L,
                 SessionType.PAID,
-                SessionStatus.PREPARING,
+                SessionStatus.PROCESSING,
                 SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
@@ -58,7 +58,7 @@ public class TestFixtures {
                 new Users(999, Set.of(NsUserTest.JAVAJIGI)),
                 0L,
                 SessionType.FREE,
-                SessionStatus.PREPARING,
+                SessionStatus.PROCESSING,
                 SessionRecruitmentStatus.PROCESSING,
                 null,
                 new BaseTimeEntity(LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(7))
