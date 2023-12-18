@@ -32,7 +32,7 @@ class JdbcSessionRepositoryTest {
         sessionRepository = new JdbcSessionRepository(
                 jdbcTemplate,
                 new JdbcUserRepository(jdbcTemplate, namedParameterJdbcTemplate),
-                new JdbcImageRepository(jdbcTemplate)
+                new JdbcImageRepository(jdbcTemplate, namedParameterJdbcTemplate)
         );
     }
 
